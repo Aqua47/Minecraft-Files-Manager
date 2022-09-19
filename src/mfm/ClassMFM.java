@@ -30,12 +30,7 @@ public class ClassMFM {
 		Scanner sc = new Scanner(System.in);
 		//color
 		while (!com.equals("0")) {
-			System.out.println();
-			System.out.println(" 1 - indexes");
-			System.out.println(" 2 - hex");
-			System.out.println(" 3 - old");
-			System.out.println(" 0 - stop");
-			System.out.println();
+			menu();
 			com = sc.nextLine();
 			long startTime = System.nanoTime();
 			if (com.equals("1")) {	
@@ -531,7 +526,7 @@ public class ClassMFM {
 						int a1 = lines.indexOf(pathname2);
 						if (a1 == -1) {
 							path2.delete();
-							System.out.println(path2+"  a==-1"); 
+							System.out.println(path2+"  deleted"); 
 						}
 					}
 				}
@@ -542,6 +537,22 @@ public class ClassMFM {
 			}
 		}
 		//sc.close();	
+	}
+	
+	static boolean menu () {
+		System.out.println();
+		System.out.println("type one of the following numbers:");
+		System.out.println();
+		System.out.println("---------------------------------------------------------------------------------");
+		System.out.println("| 1 | indexes - create a readable indexe (essential to use all others options)  |");
+		System.out.println("---------------------------------------------------------------------------------");
+		System.out.println("| 2 | extract - extract the hashed files into normal files                      |");
+		System.out.println("---------------------------------------------------------------------------------");
+		System.out.println("| 3 | old - remove old minecraft version except 1.19.2                          |");
+		System.out.println("---------------------------------------------------------------------------------");
+		System.out.println("| 0 | stop - startn't                                                           |");
+		System.out.println("---------------------------------------------------------------------------------");
+		return true;
 	}
 	
 	static String[] available (String in) {
@@ -556,7 +567,7 @@ public class ClassMFM {
 		}
 		System.out.println();
 		System.out.println("type the version without: .json  ex: 1.19 for 1.19!");
-		System.out.println("or  all to do all version available");
+		System.out.println("or  all  to do all version available");
 		System.out.println();
 		return pathnamesP1;
 	}
