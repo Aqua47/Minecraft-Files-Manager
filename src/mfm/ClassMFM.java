@@ -67,7 +67,6 @@ public class ClassMFM {
 					File out = new File("output\\indexes\\"+ver);
 					FileWriter fw = new FileWriter(out);
 					PrintWriter pw = new PrintWriter(fw);
-					pw.close();
 					char cd;
 					byte vir = 0;
 					if (ver.equals("pre-1.6.json")) {
@@ -75,10 +74,10 @@ public class ClassMFM {
 					}					
 					//indexes decoder loop
 					int ci;
-					for (ci = fin.read(); ci!=-1; ci = fin.read()) {
+					for (ci = fin.read(); ci!=-1; ci = fin.read()) {				
 						cd = (char)ci;
 						pw.print(cd);
-						if (cd==',') {
+						if (cd == ',') {
 							vir++;
 							if (vir==2) {
 								vir = 0;
@@ -87,12 +86,16 @@ public class ClassMFM {
 						}
 					}
 					System.out.println("indexes "+ver+" created");
+					fin.close();
+					pw.close();
 				}
 			}
 			// part 2	
 			if (com.equals("2")) {
-				available("output\\indexes");
-				String ver = sc.nextLine();
+				if (available("output\\indexes").length == 0) {
+					System.out.println("you need to create a readable indexe first");
+				}
+				String ver = sc.nextLine();		
 				String verjson = ver+".json";
 				new File("output\\objects").mkdirs();
 				String hex = "0";
@@ -538,7 +541,7 @@ public class ClassMFM {
 				System.out.println(elapsedTime/100+" second");
 			}
 		}
-		sc.close();	
+		//sc.close();	
 	}
 	
 	static String[] available (String in) {
