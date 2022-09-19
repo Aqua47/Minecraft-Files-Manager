@@ -63,16 +63,16 @@ public class ClassMFM {
 					}
 					a++;
 					FileInputStream fin = null;
-					fin = new FileInputStream(min+"\\assets\\indexes\\"+ver);
+					fin = new FileInputStream(min+"\\assets\\indexes\\"+ver);			
 					File out = new File("output\\indexes\\"+ver);
 					FileWriter fw = new FileWriter(out);
 					PrintWriter pw = new PrintWriter(fw);
+					pw.close();
 					char cd;
 					byte vir = 0;
 					if (ver.equals("pre-1.6.json")) {
 						vir = -1;
-					}
-					
+					}					
 					//indexes decoder loop
 					int ci;
 					for (ci = fin.read(); ci!=-1; ci = fin.read()) {
@@ -87,8 +87,6 @@ public class ClassMFM {
 						}
 					}
 					System.out.println("indexes "+ver+" created");
-					fin.close();
-					pw.close();
 				}
 			}
 			// part 2	
@@ -540,6 +538,7 @@ public class ClassMFM {
 				System.out.println(elapsedTime/100+" second");
 			}
 		}
+		sc.close();	
 	}
 	
 	static String[] available (String in) {
@@ -585,9 +584,5 @@ public class ClassMFM {
 		}
 		return ct;		
 	}
-	
-	
-	public static final String TEXT_RESET = "\u001B[0m";
-	public static final String ANSI_YELLOW = "\u001B[33m";
-			
+
 }
