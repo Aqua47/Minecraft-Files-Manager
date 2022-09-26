@@ -1,6 +1,8 @@
 package mfm;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileReader;
@@ -13,11 +15,12 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.zip.GZIPInputStream;
+import java.util.zip.GZIPOutputStream;
 
 public class ClassMFM {
 	
 	public static void main(String[] args) throws IOException {
-		double allTime = 0;
 		String outInd = "output\\indexes\\";
 		new File(outInd).mkdirs();
 		File floc = new File(".minecraft file location.txt");
@@ -31,11 +34,12 @@ public class ClassMFM {
 			menu();
 			com = sc.nextLine();
 			long startTime = System.nanoTime();
+			bar();
 			if (com.equals("1")) {	
 				String[] pathnamesP1 = available(min+"\\assets\\indexes");
-				allTime = 0;
 				String ver = sc.nextLine();
-				System.out.println("---------------------------------------------------------------------------------");
+				startTime = System.nanoTime();
+				bar();
 				int a = -1;
 				int p = pathnamesP1.length;
 				if (ver.equals("all")) {
@@ -79,16 +83,19 @@ public class ClassMFM {
 					System.out.println("indexes "+ver+" created");
 					fin.close();
 					pw.close();
+					timePrint(startTime);
 				}
 			}
 			// part 2	
 			if (com.equals("2")) {
+				byte p1=0, p2=0, p3=0, p4=0;
 				String[] pathnamesP = available(min+"\\assets\\indexes");
 				if (pathnamesP.length == 0) {
 					System.out.println("you need to create a readable indexe first");
 				}
-				String ver = sc.nextLine();	
-				System.out.println("---------------------------------------------------------------------------------");
+				String ver = sc.nextLine();
+				startTime = System.nanoTime();
+				bar();
 				String verjson = ver+".json";
 				int a = -1;
 				int p = pathnamesP.length;
@@ -124,17 +131,24 @@ public class ClassMFM {
 					}
 					byte getadd = -1;
 					byte h = 0;
+					//%
+					br = new BufferedReader(new FileReader(outInd+verjson));
+					double allLine = 1;
+					while (br.readLine() != null) {
+						allLine++;
+					}
+					double line = 1;
 					for (int r = 0; r!=-1;) {
 						r = lec.read();
 						char c = (char)r;
 						if (get==2) {
 							get = -2;
 							h++;
-							byte ccadd = 20;
+							byte ccadd = 16;
 							byte lim = 0;
 							while (ccadd != 80) {
 								if (lim != 1 || ca.get(ccadd).equals(' ')) {
-									cc = cc(ca, ccadd);	
+									cc = cc(ca, ccadd);
 									cc = cc.trim();
 									lim++;
 								}
@@ -142,7 +156,7 @@ public class ClassMFM {
 								ccadd++;							
 							}
 							if (h==1) {
-								cc2 = cc.trim();
+								cc2 = cc;
 								File nfp = new File("output\\objects\\"+ver+"\\"+cc2);
 								fileOut = "output\\objects\\"+ver+"\\"+cc2.substring(0, cc2.length() - nfp.getName().length())+nfp.getName();
 								File nf = new File(fileOut);
@@ -155,6 +169,24 @@ public class ClassMFM {
 								Path dest = Paths.get(fileOut);
 								Files.deleteIfExists(dest);
 								Files.copy(source, dest);
+								line++;
+								if (line/allLine >= 0.25 && p1 == 0) {
+									System.out.print("25%   ");
+									p1++;
+								}
+								if (line/allLine >= 0.5 && p2 == 0) {
+									System.out.print("50%   ");
+									p2++;
+								}
+								if (line/allLine >= 0.75 && p3 == 0) {
+									System.out.print("75%   ");
+									p3++;
+								}
+								if (line/allLine >= 1 && p4 == 0) {
+									System.out.println("100%");
+									p4++;
+								}
+								//System.out.println(line+"/"+allLine);
 							}
 							for (byte ca80 = 0; ca80 != 80; ca80++) {
 								ca.set(ca80,' ');
@@ -172,11 +204,8 @@ public class ClassMFM {
 						}
 					}
 					lec.close();
-					double elapsedTime = ((System.nanoTime() - startTime)/10000000);
-					allTime = allTime + elapsedTime;
-					//System.out.println(elapsedTime/100+" second");
 					System.out.println(verjson);
-					//System.out.println(allTime/100+" second");
+					timePrint(startTime);
 				}
 			}		
 		//part 3
@@ -184,22 +213,29 @@ public class ClassMFM {
 				available(min+"\\versions");
 				System.out.println("Type the version you want to keep!");
 				String keep = sc.nextLine();
-				System.out.println("---------------------------------------------------------------------------------");
-				String pk = "";
-				//timer	
 				startTime = System.nanoTime();
+				String minName = min.substring(11,min.indexOf("A")-2);
+				Runtime.getRuntime().exec("explorer.exe /select,"+"C:\\Users\\"+minName+"\\AppData\\Roaming\\.minecraft\\versions\\"+keep);
+				bar();				
 				//while
-				int l = path(min, "\\versions\\", keep).length-1;
-				while (l != 0) {
-					l = path(min, "\\versions\\", keep).length-2;
-					pk = path(min, "\\versions\\", keep)[l];
-					path(min, "\\versions\\"+pk, keep);
-				}	
-				//hex...	
-				br = new BufferedReader(new FileReader("output\\indexes\\1.19.json"));
+				
+				//int l = path(min, "\\versions\\", keep).length-1;
+				//while (l != 0) {
+					//l = path(min, "\\versions\\", keep).length-2;
+					//pk = path(min, "\\versions\\", keep)[l];
+					//path(min, "\\versions\\"+pk, keep);
+				//}	
+				
+				//hex...
+				String keepConv = keep;
+				if (keep.lastIndexOf(".") >= 3) {
+					keepConv = keep.substring(0,keep.length()-2);
+				}
+				br = new BufferedReader(new FileReader("output\\indexes\\"+keepConv+".json"));
 				String line = "0";
 				ArrayList<String> lines = new ArrayList<String>();
 				ArrayList<String> folders = new ArrayList<String>();
+				ArrayList<String> sizeS = new ArrayList<String>();
 				boolean line1 = true;
 				int start = 0;
 				while ((line = br.readLine()) != null) {
@@ -212,11 +248,17 @@ public class ClassMFM {
 					}
 					lines.add(line.substring(start,start+40));
 					folders.add(line.substring(start,start+2));
+					String sizeSt = line.substring(start+50,line.length()-2);
+					if (sizeSt.endsWith("}")) {
+						sizeSt = sizeSt.substring(0,sizeSt.length()-1);
+					}
+					sizeS.add(sizeSt);
 				}
 				br.close();	
 				String[] pathnames = {"0"};
 				File file = new File(min+"\\assets\\objects");
 				pathnames = file.list();
+				long bytes = 0;
 				for (String pathname : pathnames) {		
 					String[] pathnames2 = {"0"};
 					File file2 = new File(min+"\\assets\\objects\\"+pathname);
@@ -225,39 +267,86 @@ public class ClassMFM {
 						File path2 = new File(file2+"\\"+pathname2);
 						int a1 = lines.indexOf(pathname2);
 						if (a1 == -1) {
+							Path path = Paths.get(file2+"\\"+pathname2);
+							try {
+								bytes += Files.size(path);
+							} catch (IOException e) {
+								e.printStackTrace();
+							}
 							path2.delete();
 							System.out.println(path2+"  deleted"); 
 						}
 					}
 				}
-				//timer end
-				double elapsedTime = ((System.nanoTime() - startTime)/10000000);
-				allTime = allTime + elapsedTime;
-				System.out.println(elapsedTime/100+" second");
+				System.out.println(bytes/1048576+" mo  "+bytes/1024+" ko  "+bytes+" o  ");
+				timePrint(startTime);
 			}
+		//part 4	
+			if (com.equals("4")) {
+				startTime = System.nanoTime();
+				System.out.println(gzTo(toGZ("works in progress")));
+				System.out.println(toGZ("works in progress"));
+				timePrint(startTime);
+			}			
 		}
 		sc.close();	
 	}
 	
-	static boolean menu () {
-		System.out.println("---------------------------------------------------------------------------------");
-		System.out.println("|                                                                               |");
-		System.out.println("|                     Type one of the following numbers:                        |");
-		System.out.println("|                                                                               |");
-		System.out.println("---------------------------------------------------------------------------------");
-		System.out.println("| 1 | Indexes - Create a readable indexe (essential to use all others options)  |");
-		System.out.println("---------------------------------------------------------------------------------");
-		System.out.println("| 2 | Extract - Extract the hashed files into normal files                      |");
-		System.out.println("---------------------------------------------------------------------------------");
-		System.out.println("| 3 | Old - Remove old minecraft version except 1.19.2                          |");
-		System.out.println("---------------------------------------------------------------------------------");
-		System.out.println("| 0 | Stop - Startn't                                                           |");
+	static String toGZ (String str) throws IOException {
+		 if (null == str || str.length() <= 0) {
+	            return str;
+	        }
+	        ByteArrayOutputStream out = new ByteArrayOutputStream();
+	        GZIPOutputStream gzip = new GZIPOutputStream(out);
+	        gzip.write(str.getBytes());
+	        gzip.close();
+	        return out.toString("ISO-8859-1");
+	}
+	
+	static String gzTo (String str) throws IOException {
+		ByteArrayOutputStream out = new ByteArrayOutputStream();
+        ByteArrayInputStream in = new ByteArrayInputStream(str.getBytes("ISO-8859-1"));
+        GZIPInputStream gzip = new GZIPInputStream(in);
+        byte[] buffer = new byte[256];
+        int n = 0;
+        while ((n = gzip.read(buffer)) >= 0) {
+            out.write(buffer, 0, n);
+        }
+        return out.toString("utf-8");
+	
+	}
+	
+	static boolean bar () {
 		System.out.println("---------------------------------------------------------------------------------");
 		return true;
 	}
 	
+	static boolean menu () {
+		bar();
+		System.out.println("|                                                                               |");
+		System.out.println("|                     Type one of the following numbers:                        |");
+		System.out.println("|                                                                               |");
+		bar();
+		System.out.println("| 1 | Indexes - Create a readable indexe (essential to use all others options)  |");
+		bar();
+		System.out.println("| 2 | Extract - Extract the hashed files into normal files                      |");
+		bar();
+		System.out.println("| 3 | Old - Remove old minecraft version except 1.19.2                          |");
+		bar();
+		System.out.println("| 4 | Logs - Show info of logs files                                            |");
+		bar();
+		System.out.println("| 0 | Stop - Startn't                                                           |");
+		bar();
+		return true;
+	}
+	
+	static boolean timePrint (double startTime) {
+		double elapsedTime = ((System.nanoTime() - startTime)/10000000);
+		System.out.println(elapsedTime/100+" second");
+		return true;
+	}
+	
 	static String[] available (String in) {
-		System.out.println();
 		System.out.println("Available versions:");
 		System.out.println();
 		String[] pathnamesP1;
