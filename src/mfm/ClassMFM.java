@@ -9,26 +9,30 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Stream;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
 public class ClassMFM {
 	
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) throws IOException, InterruptedException {
 		String outInd = "output\\indexes\\";
 		new File(outInd).mkdirs();
 		File floc = new File(".minecraft file location.txt");
 		BufferedReader br = new BufferedReader(new FileReader(floc));
 		String min = br.readLine();
 		br.close();
-		String fileOut = "";
 		String com = "";
+		
+		
+		String fileOut = "";
 		Scanner sc = new Scanner(System.in);
 		while (!com.equals("0")) {
 			menu();
@@ -36,10 +40,9 @@ public class ClassMFM {
 			long startTime = System.nanoTime();
 			bar();
 			if (com.equals("1")) {	
-				String[] pathnamesP1 = available(min+"\\assets\\indexes");
+				String[] pathnamesP1 = available(min+"\\assets\\indexes",true,true);
 				String ver = sc.nextLine();
 				startTime = System.nanoTime();
-				bar();
 				int a = -1;
 				int p = pathnamesP1.length;
 				if (ver.equals("all")) {
@@ -53,12 +56,13 @@ public class ClassMFM {
 					ver = (pathnamesP1[a]);
 				}
 				while(p != a) {
+					bar();
 					if (a != -1) {
 						ver = (pathnamesP1[a]);
 					}
 					a++;
 					FileInputStream fin = null;
-					fin = new FileInputStream(min+"\\assets\\indexes\\"+ver);			
+					fin = new FileInputStream(min+"\\assets\\indexes\\"+ver);	
 					File out = new File(outInd+ver);
 					FileWriter fw = new FileWriter(out);
 					PrintWriter pw = new PrintWriter(fw);
@@ -88,14 +92,12 @@ public class ClassMFM {
 			}
 			// part 2	
 			if (com.equals("2")) {
-				byte p1=0, p2=0, p3=0, p4=0;
-				String[] pathnamesP = available(min+"\\assets\\indexes");
+				String[] pathnamesP = available(min+"\\assets\\indexes",true,true);
 				if (pathnamesP.length == 0) {
 					System.out.println("you need to create a readable indexe first");
 				}
 				String ver = sc.nextLine();
 				startTime = System.nanoTime();
-				bar();
 				String verjson = ver+".json";
 				int a = -1;
 				int p = pathnamesP.length;
@@ -110,6 +112,8 @@ public class ClassMFM {
 					ver = verjson.substring(0,verjson.length()-4);
 				}
 				while(p != a) {
+					bar();
+					byte pl = 0;
 					if (a != -1) {
 						verjson = (pathnamesP[a]);
 						ver = verjson.substring(0,verjson.length()-4);
@@ -133,11 +137,11 @@ public class ClassMFM {
 					byte h = 0;
 					//%
 					br = new BufferedReader(new FileReader(outInd+verjson));
-					double allLine = 1;
+					float allLine = 0;
 					while (br.readLine() != null) {
 						allLine++;
 					}
-					double line = 1;
+					float line = 0;
 					for (int r = 0; r!=-1;) {
 						r = lec.read();
 						char c = (char)r;
@@ -163,30 +167,29 @@ public class ClassMFM {
 								nf.mkdirs();
 							}
 							if (h==2) {
-								h = 0;			
+								h = 0;
 								hex = cc.substring(0,2);
 								Path source = Paths.get(min+"\\assets\\objects\\"+hex+"\\"+cc);
 								Path dest = Paths.get(fileOut);
 								Files.deleteIfExists(dest);
 								Files.copy(source, dest);
 								line++;
-								if (line/allLine >= 0.25 && p1 == 0) {
+								if (line/allLine >= 0.25 && pl == 0) {
 									System.out.print("25%   ");
-									p1++;
+									pl++;
 								}
-								if (line/allLine >= 0.5 && p2 == 0) {
+								if (line/allLine >= 0.5 && pl == 1) {
 									System.out.print("50%   ");
-									p2++;
+									pl++;
 								}
-								if (line/allLine >= 0.75 && p3 == 0) {
+								if (line/allLine >= 0.75 && pl == 2) {
 									System.out.print("75%   ");
-									p3++;
+									pl++;
 								}
-								if (line/allLine >= 1 && p4 == 0) {
+								if (line/allLine >= 1 && pl == 3) {
 									System.out.println("100%");
-									p4++;
+									pl++;
 								}
-								//System.out.println(line+"/"+allLine);
 							}
 							for (byte ca80 = 0; ca80 != 80; ca80++) {
 								ca.set(ca80,' ');
@@ -210,23 +213,13 @@ public class ClassMFM {
 			}		
 		//part 3
 			if (com.equals("3")) {
-				available(min+"\\versions");
+				available(min+"\\versions",false,true);
 				System.out.println("Type the version you want to keep!");
 				String keep = sc.nextLine();
 				startTime = System.nanoTime();
 				String minName = min.substring(11,min.indexOf("A")-2);
 				Runtime.getRuntime().exec("explorer.exe /select,"+"C:\\Users\\"+minName+"\\AppData\\Roaming\\.minecraft\\versions\\"+keep);
-				bar();				
-				//while
-				
-				//int l = path(min, "\\versions\\", keep).length-1;
-				//while (l != 0) {
-					//l = path(min, "\\versions\\", keep).length-2;
-					//pk = path(min, "\\versions\\", keep)[l];
-					//path(min, "\\versions\\"+pk, keep);
-				//}	
-				
-				//hex...
+				bar();
 				String keepConv = keep;
 				if (keep.lastIndexOf(".") >= 3) {
 					keepConv = keep.substring(0,keep.length()-2);
@@ -284,8 +277,65 @@ public class ClassMFM {
 		//part 4	
 			if (com.equals("4")) {
 				startTime = System.nanoTime();
-				System.out.println(gzTo(toGZ("works in progress")));
-				System.out.println(toGZ("works in progress"));
+				
+				//7z
+				File delLogs = new File("output\\logs");	
+				File[] filesLogs = delLogs.listFiles();
+				if (filesLogs != null) {
+					for (File file : filesLogs) {
+						file.delete();
+					}
+				}
+				try {
+					Process gz = Runtime.getRuntime().exec("cmd /C start /wait 7z.bat");
+					gz.waitFor();
+				} catch (IOException e) {
+					e.printStackTrace();
+					System.out.println("you need to download 7-Zip!  7-zip.org");
+					com = "0";
+				}
+				//7z
+				
+				int timeLog = 0;
+				int logNb = 0;
+				String log = " ";
+				int repeatLog = available("output\\logs",false,false).length;
+				while (repeatLog != 0) {
+					log = available("output\\logs",false,false)[logNb];
+					br = new BufferedReader(new FileReader("output\\logs\\"+log));
+					String logLine = br.readLine();
+					String firstTime = findTime(logLine);
+					String lastTime = findTime(logLine);
+					String lastLine = "";
+					while (logLine != null) {
+						if (logLine != null && findTime(logLine) != "") {
+							lastLine = logLine;
+						}
+						logLine = br.readLine();
+					}
+					if (findTime(lastTime)!=null) {
+						lastTime = findTime(lastLine);
+						int time = calcTime(lastTime)-calcTime(firstTime);
+						if (time < 0) {
+							time = time+86400;
+						}
+						timeLog = timeLog+time;
+						System.out.println(available("output\\logs",false,false)[logNb]+" time: "+time);
+					}
+					logNb++;
+					repeatLog--;
+				}
+				System.out.println("alltime: "+timeLog);
+				
+				
+				filesLogs = delLogs.listFiles();
+				if (filesLogs != null) {
+					for (File file : filesLogs) {
+						file.delete();
+					}
+				}
+				//File lastLog = new File(filesLogs[filesLogs.length-1].getName());
+				//lastLog.delete();				
 				timePrint(startTime);
 			}			
 		}
@@ -293,6 +343,17 @@ public class ClassMFM {
 	}
 	
 	static String toGZ (String str) throws IOException {
+		 if (null == str || str.length() <= 0) {
+	            return str;
+	        }
+	        ByteArrayOutputStream out = new ByteArrayOutputStream();
+	        GZIPOutputStream gzip = new GZIPOutputStream(out);
+	        gzip.write(str.getBytes());
+	        gzip.close();
+	        return out.toString("ISO-8859-1");
+	}
+	
+	static String toGZ2 (String str) throws IOException {
 		 if (null == str || str.length() <= 0) {
 	            return str;
 	        }
@@ -316,6 +377,19 @@ public class ClassMFM {
 	
 	}
 	
+	static String gzTo2 (String str) throws IOException {
+		ByteArrayOutputStream out = new ByteArrayOutputStream();
+        ByteArrayInputStream in = new ByteArrayInputStream(str.getBytes("ISO-8859-1"));
+        GZIPInputStream gzip = new GZIPInputStream(in);
+        byte[] buffer = new byte[256];
+        int n = 0;
+        while ((n = gzip.read(buffer)) >= 0) {
+            out.write(buffer, 0, n);
+        }
+        return out.toString("utf-8");
+	
+	}
+	
 	static boolean bar () {
 		System.out.println("---------------------------------------------------------------------------------");
 		return true;
@@ -327,38 +401,46 @@ public class ClassMFM {
 		System.out.println("|                     Type one of the following numbers:                        |");
 		System.out.println("|                                                                               |");
 		bar();
-		System.out.println("| 1 | Indexes - Create a readable indexe (essential to use all others options)  |");
+		System.out.println("| 1 | Indexes - Create a readable indexe (essential to use 2 and 3)  |");
 		bar();
 		System.out.println("| 2 | Extract - Extract the hashed files into normal files                      |");
 		bar();
 		System.out.println("| 3 | Old - Remove old minecraft version except 1.19.2                          |");
 		bar();
-		System.out.println("| 4 | Logs - Show info of logs files                                            |");
+		System.out.println("| 4 | Logs - Show info of logs files (you need to download 7-Zip!)              |");
 		bar();
 		System.out.println("| 0 | Stop - Startn't                                                           |");
 		bar();
 		return true;
 	}
 	
-	static boolean timePrint (double startTime) {
-		double elapsedTime = ((System.nanoTime() - startTime)/10000000);
-		System.out.println(elapsedTime/100+" second");
+ 	static boolean timePrint (float startTime) {
+		float elapsedTime = ((System.nanoTime() - startTime)/10000000);
+		System.out.println(elapsedTime/100000*1000+" second");
 		return true;
 	}
 	
-	static String[] available (String in) {
-		System.out.println("Available versions:");
-		System.out.println();
+	static String[] available (String in, boolean all, boolean print) {
+		if (print) {
+			System.out.println("Available versions:");
+			System.out.println();
+		}
 		String[] pathnamesP1;
 		File fav = new File(in);
 		pathnamesP1 = fav.list();		
 		for (String pathnameP1 : pathnamesP1) {
-			System.out.println(pathnameP1);
+			if (print) {
+				System.out.println(pathnameP1);
+			}
 		}
-		System.out.println();
-		System.out.println("Type the version without: .json  ex: 1.19 for 1.19!");
-		System.out.println("Or  all  to do all version available");
-		System.out.println();
+		if (print) {
+			System.out.println();
+			System.out.println("Type the version without: .json  ex: 1.19 for 1.19!");
+			if (all) {
+				System.out.println("Or  all  to do all version available");
+			}
+			System.out.println();
+		}
 		return pathnamesP1;
 	}
 	
@@ -395,6 +477,23 @@ public class ClassMFM {
 			}
 		}
 		return ct;		
+	}
+	
+	static String findTime (String line) {
+		String out = "";
+		int position = line.indexOf(":");
+		if (position < 18 && position != -1 && line.startsWith("[")) {
+			out = line.substring(position-2,position+6);
+		}		
+		return out;
+	}
+	
+	static int calcTime (String time) {
+		int hours = Integer.valueOf(time.substring(0,2));
+		int minutes = Integer.valueOf(time.substring(3,5));
+		int seconds = Integer.valueOf(time.substring(6,8));
+		seconds = seconds+(minutes*60)+(hours*3600);
+		return seconds;
 	}
 
 }
