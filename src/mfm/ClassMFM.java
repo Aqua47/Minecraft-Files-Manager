@@ -9,14 +9,13 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-import java.util.stream.Stream;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
@@ -29,9 +28,7 @@ public class ClassMFM {
 		BufferedReader br = new BufferedReader(new FileReader(floc));
 		String min = br.readLine();
 		br.close();
-		String com = "";
-		
-		
+		String com = "";	
 		String fileOut = "";
 		Scanner sc = new Scanner(System.in);
 		while (!com.equals("0")) {
@@ -278,8 +275,21 @@ public class ClassMFM {
 			if (com.equals("4")) {
 				startTime = System.nanoTime();
 				
+				//create 7z.bat
+				FileWriter write7z = new FileWriter("7z.bat");
+				write7z.write("color 2\n\"C:\\Program Files\\7-Zip\\7z.exe\" e \""+min+"\\logs\\*.gz\" -o\"output\\logs\\\"\nexit");
+				write7z.close();
+				//.log
+				if (false) {
+				Path Slog = Paths.get(min+"\\logs\\latest.log");
+				Path Dlog = Paths.get("output\\logs\\latest.log");
+				Files.copy(Slog, Dlog, StandardCopyOption.REPLACE_EXISTING);
+				Slog = Paths.get(min+"\\logs\\debug.log");
+				Dlog = Paths.get("output\\logs\\debug.log");
+				Files.copy(Slog, Dlog, StandardCopyOption.REPLACE_EXISTING);
+				}
 				//7z
-				File delLogs = new File("output\\logs");	
+				File delLogs = new File("output\\logs");
 				File[] filesLogs = delLogs.listFiles();
 				if (filesLogs != null) {
 					for (File file : filesLogs) {
@@ -320,22 +330,22 @@ public class ClassMFM {
 							time = time+86400;
 						}
 						timeLog = timeLog+time;
-						System.out.println(available("output\\logs",false,false)[logNb]+" time: "+time);
+						System.out.println(available("output\\logs",false,false)[logNb]+"  second: "+time);
 					}
 					logNb++;
 					repeatLog--;
 				}
-				System.out.println("alltime: "+timeLog);
-				
-				
+				System.out.println("all seconds: "+timeLog);
+				int minutes = timeLog/60;
+				int hours = minutes/60;
+				int days = hours/24;
+				System.out.println("days:"+days+" hours:"+(hours-(days*60))+" minutes:"+(minutes-(hours*60))+" seconds:"+(timeLog-(minutes*60)));				
 				filesLogs = delLogs.listFiles();
 				if (filesLogs != null) {
 					for (File file : filesLogs) {
 						file.delete();
 					}
 				}
-				//File lastLog = new File(filesLogs[filesLogs.length-1].getName());
-				//lastLog.delete();				
 				timePrint(startTime);
 			}			
 		}
@@ -401,7 +411,7 @@ public class ClassMFM {
 		System.out.println("|                     Type one of the following numbers:                        |");
 		System.out.println("|                                                                               |");
 		bar();
-		System.out.println("| 1 | Indexes - Create a readable indexe (essential to use 2 and 3)  |");
+		System.out.println("| 1 | Indexes - Create a readable indexe (essential to use 2 and 3)             |");
 		bar();
 		System.out.println("| 2 | Extract - Extract the hashed files into normal files                      |");
 		bar();
