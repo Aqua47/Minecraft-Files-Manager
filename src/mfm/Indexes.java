@@ -8,7 +8,7 @@ import java.io.PrintWriter;
 import java.util.Scanner;
 
 public class Indexes {
-	public static void main(String min, String ver) throws IOException {
+	static void main(String min, String ver) throws IOException {
 		String[] pathnamesP1;
 		Scanner sc = new Scanner(System.in);
 		if (ver == null) {

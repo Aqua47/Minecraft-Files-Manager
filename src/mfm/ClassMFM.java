@@ -6,8 +6,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Scanner;
 
-public class ClassMFM {
-	
+public class ClassMFM {	
 	public static void main(String[] args) throws IOException, InterruptedException {
 		
 		new File("output\\indexes\\").mkdirs();
@@ -35,6 +34,9 @@ public class ClassMFM {
 			}
 			if (com.equals("4")) {
 				Logs.main(min);
+			}
+			if (com.equals("5")) {
+				Delete.main(min, null);
 			}
 			System.gc();
 		}

@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Objects {
-	public static void main(String min) throws IOException {
+	static void main(String min) throws IOException {
 		String fileOut = "";
 		String[] pathnamesP = ClassMFM.available(min+"\\assets\\indexes",true,true);
 		if (pathnamesP.length == 0) {

@@ -7,8 +7,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 public class Logs {
-
-	public static void main(String min) throws IOException, InterruptedException {
+	static void main(String min) throws IOException, InterruptedException {
 		long startTime = System.nanoTime();
 		
 		//create 7z.bat

@@ -11,8 +11,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Old {
-
-	public static void main(String min) throws IOException {
+	static void main(String min) throws IOException {
 		ClassMFM.available(min+"\\versions",false,true);
 		System.out.println("Type the version you want to keep!");
 		Scanner sc = new Scanner(System.in);
