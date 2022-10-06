@@ -9,6 +9,7 @@ import java.util.Scanner;
 
 public class Indexes {
 	static void main(String min, String ver) throws IOException {
+		new File("output\\indexes\\").mkdirs();
 		String[] pathnamesP1;
 		Scanner sc = new Scanner(System.in);
 		if (ver == null) {

@@ -1,7 +1,6 @@
 package mfm;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -9,7 +8,8 @@ import java.io.IOException;
 public class Logs {
 	static void main(String min) throws IOException, InterruptedException {
 		long startTime = System.nanoTime();
-		
+		//delete logs files to replace it
+		Delete.main(min, "4");
 		//create 7z.bat
 		FileWriter write7z = new FileWriter("7z.bat");
 		write7z.write("color 2\n\"C:\\Program Files\\7-Zip\\7z.exe\" e \""+min+"\\logs\\*.gz\" -o\"output\\logs\\\"\nexit");
@@ -24,13 +24,6 @@ public class Logs {
 		//Files.copy(Slog, Dlog, StandardCopyOption.REPLACE_EXISTING);
 		
 		//7z
-		File delLogs = new File("output\\logs");
-		File[] filesLogs = delLogs.listFiles();
-		if (filesLogs != null) {
-			for (File file : filesLogs) {
-				file.delete();
-			}
-		}
 		try {
 			Process gz = Runtime.getRuntime().exec("cmd /C start /wait 7z.bat");
 			gz.waitFor();
@@ -74,15 +67,10 @@ public class Logs {
 		int minutes = timeLog/60;
 		int hours = minutes/60;
 		int days = hours/24;
-		System.out.println("days:"+days+" hours:"+(hours-(days*60))+" minutes:"+(minutes-(hours*60))+" seconds:"+(timeLog-(minutes*60)));				
-		filesLogs = delLogs.listFiles();
-		if (filesLogs != null) {
-			for (File file : filesLogs) {
-				file.delete();
-			}
-		}
+		System.out.println("days:"+days+" hours:"+(hours-(days*60))+" minutes:"+(minutes-(hours*60))+" seconds:"+(timeLog-(minutes*60)));
 		Print.time(startTime);
 	}
+	
 	static String findTime (String line) {
 		String out = "";
 		int position = line.indexOf(":");

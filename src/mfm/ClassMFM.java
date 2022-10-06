@@ -8,9 +8,6 @@ import java.util.Scanner;
 
 public class ClassMFM {	
 	public static void main(String[] args) throws IOException, InterruptedException {
-		
-		new File("output\\indexes\\").mkdirs();
-			
 		File floc = new File(".minecraft file location.txt");
 		BufferedReader br = new BufferedReader(new FileReader(floc));
 		String min = br.readLine();
