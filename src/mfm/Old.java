@@ -8,27 +8,24 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class Old {
 	static void main(String min) throws IOException {
 		ClassMFM.available(min+"\\versions",false,true);
 		System.out.println("Type the version you want to keep!");
-		Scanner sc = new Scanner(System.in);
-		String keep = sc.nextLine();
+		String keep = Tools.scan();
 		long startTime = System.nanoTime();
 		String minName = min.substring(11,min.indexOf("A")-2);
 		Runtime.getRuntime().exec("explorer.exe /select,"+"C:\\Users\\"+minName+"\\AppData\\Roaming\\.minecraft\\versions\\"+keep);
-		String keepConv = keep;
 		if (keep.lastIndexOf(".") >= 3) {
-			keepConv = keep.substring(0,keep.length()-2);
+			keep = Tools.removeLast(keep,2);
 		}
-		Path indexe = Paths.get("output\\indexes\\"+keepConv+".json");
+		Path indexe = Paths.get("output\\indexes\\"+keep+".json");
 		if (!Files.exists(indexe)) {
-			Indexes.main(min, keepConv);
+			Indexes.main(min, keep);
 		}
 		Print.bar();
-		BufferedReader br = new BufferedReader(new FileReader("output\\indexes\\"+keepConv+".json"));
+		BufferedReader br = new BufferedReader(new FileReader("output\\indexes\\"+keep+".json"));
 		String line = "0";
 		ArrayList<String> lines = new ArrayList<String>();
 		ArrayList<String> folders = new ArrayList<String>();
@@ -47,7 +44,7 @@ public class Old {
 			folders.add(line.substring(start,start+2));
 			String sizeSt = line.substring(start+50,line.length()-2);
 			if (sizeSt.endsWith("}")) {
-				sizeSt = sizeSt.substring(0,sizeSt.length()-1);
+				sizeSt = Tools.removeLast(sizeSt,1);
 			}
 			sizeS.add(sizeSt);
 		}
@@ -75,7 +72,26 @@ public class Old {
 				}
 			}
 		}
-		System.out.println(bytes/1048576+" mo  "+bytes/1024+" ko  "+bytes+" o  ");
+		if (false) {
+		File fileI = new File(min+"\\assets\\indexes\\");
+		String[] pathnamesI = fileI.list();
+		for (String pathnameI : pathnamesI) {
+			File path2 = new File(fileI+"\\"+pathnameI);
+			int a1 = lines.indexOf(pathnameI);
+			if (a1 == -1) {
+				Path path = Paths.get(fileI+"\\"+pathnameI);
+				try {
+					bytes += Files.size(path);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				path2.delete();
+				System.out.println(path2+"  deleted"); 
+			}
+		}
+		}
+		System.gc();
+		Print.size(bytes);
 		Print.time(startTime);
 	}
 }

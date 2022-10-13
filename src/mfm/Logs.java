@@ -6,12 +6,12 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 public class Logs {
-	static void main(String min) throws IOException, InterruptedException {
+	static int main(String min) throws IOException, InterruptedException {
 		long startTime = System.nanoTime();
 		//delete logs files to replace it
 		Delete.main(min, "4");
 		//create 7z.bat
-		FileWriter write7z = new FileWriter("7z.bat");
+		FileWriter write7z = new FileWriter("7zLogs.bat");
 		write7z.write("color 2\n\"C:\\Program Files\\7-Zip\\7z.exe\" e \""+min+"\\logs\\*.gz\" -o\"output\\logs\\\"\nexit");
 		write7z.close();
 		//.log
@@ -24,15 +24,7 @@ public class Logs {
 		//Files.copy(Slog, Dlog, StandardCopyOption.REPLACE_EXISTING);
 		
 		//7z
-		try {
-			Process gz = Runtime.getRuntime().exec("cmd /C start /wait 7z.bat");
-			gz.waitFor();
-		} catch (IOException e) {
-			e.printStackTrace();
-			System.out.println("you need to download 7-Zip!  7-zip.org");
-			String com = "0";
-		}
-		//7z
+		Tools.run7z("7zLogs.bat");
 		
 		int timeLog = 0;
 		int logNb = 0;
@@ -63,12 +55,10 @@ public class Logs {
 			logNb++;
 			repeatLog--;
 		}
-		System.out.println("all seconds: "+timeLog);
-		int minutes = timeLog/60;
-		int hours = minutes/60;
-		int days = hours/24;
-		System.out.println("days:"+days+" hours:"+(hours-(days*60))+" minutes:"+(minutes-(hours*60))+" seconds:"+(timeLog-(minutes*60)));
+		Print.timePlay(timeLog);
 		Print.time(startTime);
+		System.gc();
+		return timeLog;
 	}
 	
 	static String findTime (String line) {

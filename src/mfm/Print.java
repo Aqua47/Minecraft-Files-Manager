@@ -1,6 +1,9 @@
 package mfm;
 
 public class Print {
+	static void n() {
+		System.out.println();
+	}
 	static void bar() {
 		System.out.println("---------------------------------------------------------------------------------");
 	}
@@ -20,7 +23,15 @@ public class Print {
 		bar();
 		System.out.println("| 5 | Delete - Remove files created by this program                             |");
 		bar();
+		//System.out.println("| 6 | Backup - Create a backup for your world (you need to download 7-Zip!)     |");
+		//bar();
 		System.out.println("| 0 | Stop - Startn't                                                           |");
+		bar();
+	}
+	static void menuDelete() {
+		System.out.println("choose files to remove");
+		bar();
+		System.out.println("| 1 | Indexes | 2 | Objects | 4 | Logs  | all | for all files in output         |");
 		bar();
 	}
 	static void time(float startTime) {
@@ -28,10 +39,14 @@ public class Print {
 		float m = (Math.round(elapsedTime/100000));
 		System.out.println((m/10000)+" second");
 	}
-	static void menuDelete() {
-		System.out.println("choose files to remove");
-		bar();
-		System.out.println("| 1 | Indexes | 2 | Objects | 4 | Logs or | all | for all files in output       |");
-		bar();
+	static void timePlay(int timeLog) {
+		System.out.println("all seconds: "+timeLog);
+		int minutes = timeLog/60;
+		int hours = minutes/60;
+		int days = hours/24;
+		System.out.println("days:"+days+" hours:"+(hours-(days*60))+" minutes:"+(minutes-(hours*60))+" seconds:"+(timeLog-(minutes*60)));
+	}
+	static void size(long bytes) {
+		System.out.println(bytes/1048576+" mo  "+bytes/1024+" ko  "+bytes+" o  ");
 	}
 }

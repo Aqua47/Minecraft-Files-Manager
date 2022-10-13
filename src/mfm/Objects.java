@@ -10,17 +10,17 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 public class Objects {
-	static void main(String min) throws IOException {
+	static void main(String min, String ver) throws IOException {
 		String fileOut = "";
-		String[] pathnamesP = ClassMFM.available(min+"\\assets\\indexes",true,true);
-		if (pathnamesP.length == 0) {
-			System.out.println("you need to create a readable indexe first");
+		String[] pathnamesP;
+		if (ver == null) {
+			pathnamesP = ClassMFM.available(min+"\\assets\\indexes",true,true);
+			ver = Tools.scan();
+		} else {
+			pathnamesP = ClassMFM.available(min+"\\assets\\indexes",false,false);
 		}
-		Scanner sc = new Scanner(System.in);
-		String ver = sc.nextLine();
 		long startTime = System.nanoTime();
 		String verjson = ver+".json";
 		byte a = -1;
@@ -33,19 +33,20 @@ public class Objects {
 		}
 		if (a != -1) {
 			verjson = (pathnamesP[a]);
-			ver = verjson.substring(0,verjson.length()-4);
+			ver = Tools.removeLast(verjson,5);
 		}
 		while(p != a) {
 			byte pl = 0;
 			if (a != -1) {
 				verjson = (pathnamesP[a]);
-				ver = verjson.substring(0,verjson.length()-4);
+				ver = Tools.removeLast(verjson,5);
 			}
 			a++;
 			new File("output\\objects").mkdirs();
 			String hex = "0";
 			FileInputStream lec = null;
 			Path indexe = Paths.get("output\\indexes\\"+verjson);
+			System.out.println(ver);
 			if (!Files.exists(indexe)) {
 				Indexes.main(min, ver);
 			}
@@ -134,9 +135,11 @@ public class Objects {
 					}
 				}
 			}
+			br.close();
 			lec.close();
 			System.out.println(verjson);
 			Print.time(startTime);
+			System.gc();
 		}
 	}
 	static char ccc (byte getadd, char c, char ct, byte cx) {

@@ -5,16 +5,14 @@ import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Scanner;
 
 public class Indexes {
-	static void main(String min, String ver) throws IOException {
+	static boolean main(String min, String ver) throws IOException {
 		new File("output\\indexes\\").mkdirs();
 		String[] pathnamesP1;
-		Scanner sc = new Scanner(System.in);
 		if (ver == null) {
 			pathnamesP1 = ClassMFM.available(min+"\\assets\\indexes",true,true);
-			ver = sc.nextLine();
+			ver = Tools.scan();
 		} else {
 			pathnamesP1 = ClassMFM.available(min+"\\assets\\indexes",false,false);
 		}
@@ -38,32 +36,36 @@ public class Indexes {
 			}
 			a++;
 			FileInputStream fin = null;
-			fin = new FileInputStream(min+"\\assets\\indexes\\"+ver);	
-			File out = new File("output\\indexes\\"+ver);
-			FileWriter fw = new FileWriter(out);
-			PrintWriter pw = new PrintWriter(fw);
-			char cd;
-			byte vir = 0;
-			if (ver.equals("pre-1.6.json")) {
-				vir = -1;
-			}					
-			//indexes decoder loop
-			int ci;
-			for (ci = fin.read(); ci!=-1; ci = fin.read()) {				
-				cd = (char)ci;
-				pw.print(cd);
-				if (cd == ',') {
-					vir++;
-					if (vir==2) {
-						vir = 0;
-						pw.println();
+			if (new File(min+"\\assets\\indexes\\"+ver).exists()) {
+				fin = new FileInputStream(min+"\\assets\\indexes\\"+ver);	
+				File out = new File("output\\indexes\\"+ver);
+				FileWriter fw = new FileWriter(out);
+				PrintWriter pw = new PrintWriter(fw);
+				char cd;
+				byte vir = 0;
+				if (ver.equals("pre-1.6.json")) {
+					vir = -1;
+				}					
+				//indexes decoder loop
+				int ci;
+				for (ci = fin.read(); ci!=-1; ci = fin.read()) {				
+					cd = (char)ci;
+					pw.print(cd);
+					if (cd == ',') {
+						vir++;
+						if (vir==2) {
+							vir = 0;
+							pw.println();
+						}
 					}
 				}
+				fin.close();
+				System.out.println("indexes "+ver+" created");
+				pw.close();
 			}
-			System.out.println("indexes "+ver+" created");
-			fin.close();
-			pw.close();
 			Print.time(startTime);
 		}
+		System.gc();
+		return true;
 	}
 }

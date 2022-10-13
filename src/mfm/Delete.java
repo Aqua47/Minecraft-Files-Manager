@@ -6,38 +6,32 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Comparator;
-import java.util.Scanner;
 
 public class Delete {
-	static void main(String min, String com) throws IOException {
+	static boolean main(String min, String com) throws IOException {
 		Print.menuDelete();
-		Scanner sc = new Scanner(System.in);
+		boolean r = true;
 		if (com == null) {
-			com = sc.nextLine();
+			com = Tools.scan();
 		}
 		
 		if (com.equals("all")) {	
 			deleteAll("output");
 		}
-		if (com.equals("1")) {	
+		else if (com.equals("1")) {	
 			deleteAll("output\\indexes");
 		}
-		if (com.equals("2")) {
+		else if (com.equals("2")) {
 			deleteAll("output\\objects");
 		}
-		if (com.equals("4")) {
+		else if (com.equals("4")) {
 			deleteAll("output\\logs");
 		}
-	}
-	static String[] delete(String path) {
-		File filepath = new File(path);
-		String[] pathnames = filepath.list();
-		for (String file : pathnames) {
-			File fileF = new File(path+"\\"+file);
-			fileF.delete();
-			System.out.println(fileF);
+		else {
+			r = false;
 		}
-		return pathnames;
+		System.gc();
+		return r;
 	}
 
 	static void deleteAll(String loc) throws IOException {
@@ -54,5 +48,8 @@ public class Delete {
 						}
 					});
 		}
+	}
+	static void deleteFile(String loc) throws IOException {
+		new File(loc).delete();
 	}
 }
