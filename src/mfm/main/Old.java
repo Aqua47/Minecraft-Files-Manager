@@ -12,13 +12,14 @@ import java.util.ArrayList;
 import mfm.tools.*;
 
 public class Old {
-	public static void main(String min) throws IOException {
-		Tools.available(min+"\\versions",false,true);
-		System.out.println("Type the version you want to keep!");
-		String keep = Tools.scan();
+	public static void main(String min, String keep) throws IOException {
+		if (keep == null) {
+			Tools.available(min+"\\versions",false,true);
+			System.out.println("Type the version you want to keep!");
+			keep = Tools.scan();
+		}
 		long startTime = System.nanoTime();
-		String minName = min.substring(11,min.indexOf("A")-2);
-		Runtime.getRuntime().exec("explorer.exe /select,"+"C:\\Users\\"+minName+"\\AppData\\Roaming\\.minecraft\\versions\\"+keep);
+		Runtime.getRuntime().exec("explorer.exe /select,"+min+"\\versions\\"+keep);
 		if (keep.lastIndexOf(".") >= 3) {
 			keep = Tools.removeLast(keep,2);
 		}

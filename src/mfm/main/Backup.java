@@ -1,30 +1,31 @@
 package mfm.main;
 
-import java.io.FileWriter;
 import java.io.IOException;
 
 import mfm.tools.*;
 
 public class Backup {
 
-	public static void main(String min, boolean serv) throws IOException, InterruptedException {
-		FileWriter write7z = new FileWriter("temp\\7z_Backup.bat");
+	public static void main(String min, boolean serv, String world) throws IOException, InterruptedException {
+		String txt = "";
 		if (serv) {
-			write7z.write("color 2\n7z a MFMS\\backup\\.7z "+min+"\nexit");
+			txt = "color 2\n7z a MFMS\\backup\\.7z "+min+"\nexit";
 		}
 		else {
-			Tools.available(min+"\\saves", false, true);
-			Print.n();
-			System.out.println("Type the world or | all | to do all available");
-			String world = Tools.scan();
 			String worlda = world;
-			if (world.equals("all")) {
+			if (world == null) {
+				Tools.available(min+"\\saves", false, true);
+				Print.n();
+				System.out.println("Type the world or | all | to do all available");
+				world = Tools.scan();
+			}
+			else if (world.equals("all")) {
 				world = "";
 				worlda = "all";
 			}
-			write7z.write("color 2\n7z a MFM\\backup\\"+worlda+".7z "+min+"\\saves\\"+world+"\nexit");
+			txt = "color 2\n7z a MFM\\backup\\"+worlda+".7z "+min+"\\saves\\"+world+"\nexit";
 		}
-		write7z.close();
+		Tools.write7z("temp\\7z_Backup.bat", txt);
 		Tools.run7z("temp\\7z_Backup.bat");
 	}
 }

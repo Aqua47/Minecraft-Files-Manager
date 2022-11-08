@@ -7,35 +7,90 @@ import mfm.main.*;
 import mfm.tools.*;
 
 public class MFM {	
-	static void main(String min, boolean serv) throws IOException, InterruptedException {
-		String com = "";
-		while (!com.equals("0")) {
+	static void main(String min, String sserv, String arg2, String arg3) throws IOException, InterruptedException {
+		
+		//to do list:
+			//change menu print for new command and help
+		
+			//add version command
+			//type 0 to quit everywhere...
+			//delete individual backup and version(1,2)
+		
+			//in tools:
+				//add printwriter
+				//add buffreader
+		
+			//check old print code
+		
+		
+		
+			//remove indexes file with old command
+		
+		
+			//add color
+		
+		boolean serv = false;
+		boolean wrong = false;
+		if (sserv.equals("MFMS")) {
+			serv = true;
+		}
+		boolean br = false;
+		if (arg2.length() == 0) {
+			Print.mmenu(serv);
 			Print.menu(serv);
-			com = Tools.scan();
+		}
+		else {
+			br = true;
+		}
+		while (true) {
+			if (!br) {
+				arg2 = Tools.scan().toLowerCase();
+			}
+			arg2 = arg2.toLowerCase();
 			Print.bar();
 			if (!serv) {
-				if (com.equals("1")) {	
-					Indexes.main(min, null);
+				if (arg2.matches("1|ind|indexe|indexes")) {
+					Indexes.main(min, arg3);
 				}				
-				else if (com.equals("2")) {
-					Objects.main(min, null);
+				else if (arg2.matches("2|obj|object|objects")) {
+					Objects.main(min, arg3);
 				}
-				else if (com.equals("3")) {
-					Old.main(min);
+				else if (arg2.matches("3|old")) {
+					Old.main(min, arg3);
 				}
+			} 
+			else {
+				wrong = true;
 			}
-			if (com.equals("4")) {
+			if (arg2.matches("4|logs")) {
 				new File("temp").mkdirs();
 				Logs.main(min, serv);
 			}
-			else if (com.equals("5")) {
-				Delete.main(null, serv);
+			else if (arg2.matches("5|del|delete")) {
+				Delete.main(arg3, serv);
 			}
-			else if (com.equals("6")) {
+			else if (arg2.matches("6|backup")) {
 				new File("temp").mkdirs();
-				Backup.main(min, serv);
+				Backup.main(min, serv, arg3);
 			}
-		System.gc();
+			else if (arg2.matches("0|exit|stop")) {
+				break;
+			}
+			else if (arg2.startsWith("help") || arg2.startsWith("welp")) {
+				System.out.println("help is on the way!");
+				Print.help();
+			}
+			else if (wrong) {
+				System.out.println("not a valid command! Type (mfm help) for help!");
+			}
+			if (br) {
+				break;
+			}
+			Print.menu(serv);
+			
+			//clean memory
+			
+			System.gc();
 		}
 	}
 }

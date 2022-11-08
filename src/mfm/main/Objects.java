@@ -50,6 +50,7 @@ public class Objects {
 			Path indexe = Paths.get("MFM\\indexes\\"+verjson);
 			System.out.println(ver);
 			if (!Files.exists(indexe)) {
+				Print.bar();
 				Indexes.main(min, ver);
 				System.gc();
 			}

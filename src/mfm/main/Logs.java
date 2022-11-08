@@ -2,13 +2,12 @@ package mfm.main;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 
 import mfm.tools.*;
 
 public class Logs {
-	public static int main(String min, boolean serv) throws IOException, InterruptedException {
+	public static void main(String min, boolean serv) throws IOException, InterruptedException {
 		long startTime = System.nanoTime();
 		String mfm = "";
 		if (serv == false) {
@@ -20,10 +19,7 @@ public class Logs {
 		//delete logs files to replace it
 		Delete.main("4", serv);
 		//create 7z.bat
-		FileWriter write7z = new FileWriter("temp\\7z_Logs.bat");
-		write7z.write("color 2\n\"C:\\Program Files\\7-Zip\\7z.exe\" e \""+min+"\\logs\\*.gz\" -o\""+mfm+"\\logs\"\nexit");
-		write7z.close();
-	
+		Tools.write7z("temp\\7z_Logs.bat", "color 2\n\"C:\\Program Files\\7-Zip\\7z.exe\" e \""+min+"\\logs\\*.gz\" -o\""+mfm+"\\logs\"\nexit");
 		Tools.run7z("temp\\7z_Logs.bat");
 		
 		int timeLog = 0;
@@ -39,7 +35,7 @@ public class Logs {
 			String lastTime = findTime(logLine);
 			String lastLine = "";
 			while (logLine != null) {
-				if (logLine != null && findTime(logLine) != "") {
+				if (findTime(logLine) != "") {
 					lastLine = logLine;
 				}
 				logLine = br.readLine();
@@ -59,7 +55,6 @@ public class Logs {
 		Print.timePlay(timeLog);
 		Print.time(startTime);
 		System.gc();
-		return timeLog;
 	}
 	
 	static String findTime (String line) {

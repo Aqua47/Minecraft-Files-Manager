@@ -7,11 +7,13 @@ public class Print {
 	public static void bar() {
 		System.out.println("---------------------------------------------------------------------------------");
 	}
-	public static void mmenu() {
+	public static void mmenu(boolean s) {
 		bar();
-		System.out.println("| press 1 to manage your game files                                             |");
-		bar();
-		System.out.println("| press 2 to manage your server files                                           |");
+		if (s) {
+			System.out.println("|                          manage your server files                             |");
+		} else {	
+			System.out.println("|                          manage your games files                             |");
+		}
 		bar();
 	}
 	public static void menu(boolean s) {
@@ -34,8 +36,33 @@ public class Print {
 		bar();
 		System.out.println("| 6 | Backup - Create a backup for your world (you need to download 7-Zip!)     |");
 		bar();
-		System.out.println("| 0 | Exit - Return to main menu                                                |");
+		System.out.println("| 0 | Stop - Startn't                                                           |");
 		bar();
+	}
+	public static void help() {
+		System.out.println("");
+		System.out.println("Usage:[1] [2] [3]");
+		System.out.println("Example1:mfm ind 1.19");
+		System.out.println("Example2:mfm+s delete all");
+		System.out.println("Example3:mfms logs");
+		System.out.println("");
+		System.out.println("command:");
+		System.out.println("  1:");
+		System.out.println("    mfm");
+		System.out.println("    mfms");
+		System.out.println("    mfm+s");
+		System.out.println("  2:");
+		System.out.println("    indexes");
+		System.out.println("    objects");
+		System.out.println("    old");
+		System.out.println("    logs");
+		System.out.println("    delete");
+		System.out.println("    backup");
+		System.out.println("    stop");
+		System.out.println("    help");
+		System.out.println("  3:");
+		System.out.println("    all and others options that are displayed");
+		System.out.println("");
 	}
 	public static void menuDelete(boolean serv) {
 		System.out.println("choose files to remove");
@@ -48,6 +75,9 @@ public class Print {
 		}
 		bar();
 	}
+	
+	//old code...
+	
 	public static void time(float startTime) {
 		float elapsedTime = ((System.nanoTime() - startTime));
 		float m = (Math.round(elapsedTime/100000));

@@ -9,7 +9,7 @@ import java.io.PrintWriter;
 import mfm.tools.*;
 
 public class Indexes {
-	public static boolean main(String min, String ver) throws IOException {
+	public static void main(String min, String ver) throws IOException {
 		new File("MFM\\indexes\\").mkdirs();
 		String[] pathnamesP1;
 		if (ver == null) {
@@ -32,7 +32,7 @@ public class Indexes {
 		}
 		while(p != a) {
 			long startTime = System.nanoTime();
-			Print.bar();
+			//Print.bar();
 			if (a != -1) {
 				ver = (pathnamesP1[a]);
 			}
@@ -61,12 +61,12 @@ public class Indexes {
 						}
 					}
 				}
+				fw.close();
 				fin.close();
 				System.out.println("indexes "+ver+" created");
 			}
 			Print.time(startTime);
 		}
 		System.gc();
-		return true;
 	}
 }
