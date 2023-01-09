@@ -34,8 +34,12 @@ public class Print {
 		bar();
 		System.out.println("| 5 | Delete - Remove files created by this program                             |");
 		bar();
-		System.out.println("| 6 | Backup - Create a backup for your world (you need to download 7-Zip!)     |");
+		System.out.println("| 6 | Backup - Create a backup for your world (you need to download 7-Zip!)     |");	
 		bar();
+		if (!s) {
+			System.out.println("| 7 | .minecraft - Open .minecraft folder                                       |");
+			bar();
+		}
 		System.out.println("| 0 | Stop - Startn't                                                           |");
 		bar();
 	}
@@ -58,6 +62,7 @@ public class Print {
 		System.out.println("    logs");
 		System.out.println("    delete");
 		System.out.println("    backup");
+		System.out.println("    .minecraft");
 		System.out.println("    stop");
 		System.out.println("    help");
 		System.out.println("  3:");

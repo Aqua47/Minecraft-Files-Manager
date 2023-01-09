@@ -11,11 +11,12 @@ import mfm.tools.*;
 public class Indexes {
 	public static void main(String min, String ver) throws IOException {
 		new File("MFM\\indexes\\").mkdirs();
-		String[] pathnamesP1;
-		if (ver.length() == 0) {
+		String[] pathnamesP1 = {};
+		if (ver == null || ver.length() == 0) {
 			pathnamesP1 = Tools.available(min+"\\assets\\indexes",true,true);
 			ver = Tools.scan();
-		} else {
+		}
+		else {
 			pathnamesP1 = Tools.available(min+"\\assets\\indexes",false,false);
 		}
 		if (ver != "0") {

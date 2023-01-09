@@ -16,7 +16,7 @@ public class Delete {
 		
 		//if no command enter a command
 		
-		if (com.length() == 0) {
+		if (com == null || com.length() == 0) {
 			Print.menuDelete(serv);
 			com = Tools.scan().toLowerCase();
 		}

@@ -10,10 +10,8 @@ public class MFM {
 	public static void main(String min, String sserv, String arg2, String arg3) throws IOException, InterruptedException {
 		
 		//to do list:
-			//add * for all
-
-			//change menu print for new command and help
-			//repair name of backup and all ser is OK
+		
+			//7-zip installer when needed
 		
 			//add version command
 			//type 0 to quit on old
@@ -24,12 +22,9 @@ public class MFM {
 				//add buffreader
 		
 			//check old print code
-		
-		
-		
+
 			//remove indexes file with old command
-		
-		
+				
 			//add color
 		
 		boolean serv = false;
@@ -38,7 +33,7 @@ public class MFM {
 			serv = true;
 		}
 		boolean br = false;
-		if (arg2.length() == 0) {
+		if (arg2 == null || arg2.length() == 0) {
 			Print.mmenu(serv);
 			Print.menu(serv);
 		}
@@ -76,6 +71,10 @@ public class MFM {
 				new File("temp").mkdirs();
 				Backup.main(min, serv, arg3);
 			}
+			else if (arg2.matches("7|minecraft|.minecraft")) {
+				Runtime.getRuntime().exec("explorer.exe /select,"+min+"\\assets");
+			}
+			
 			else if (arg2.matches("0|exit|stop")) {
 				break;
 			}
@@ -92,7 +91,6 @@ public class MFM {
 			Print.menu(serv);
 			
 			//clean memory
-			
 			System.gc();
 		}
 	}

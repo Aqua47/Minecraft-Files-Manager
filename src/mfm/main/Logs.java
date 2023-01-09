@@ -57,7 +57,7 @@ public class Logs {
 		System.gc();
 	}
 	
-	static String findTime (String line) {
+	private static String findTime (String line) {
 		String out = "";
 		int position = line.indexOf(":");
 		if (position < 18 && position != -1 && line.startsWith("[")) {
@@ -66,7 +66,7 @@ public class Logs {
 		return out;
 	}
 	
-	static int calcTime (String time) {
+	private static int calcTime (String time) {
 		int hours = Integer.valueOf(time.substring(0,2));
 		int minutes = Integer.valueOf(time.substring(3,5));
 		int seconds = Integer.valueOf(time.substring(6,8));

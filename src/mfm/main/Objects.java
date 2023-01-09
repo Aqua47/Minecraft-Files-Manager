@@ -17,7 +17,7 @@ public class Objects {
 	public static void main(String min, String ver) throws IOException {
 		String fileOut = "";
 		String[] pathnamesP;
-		if (ver.length() == 0) {
+		if (ver == null || ver.length() == 0) {
 			pathnamesP = Tools.available(min+"\\assets\\indexes",true,true);
 			ver = Tools.scan();
 		} else {
