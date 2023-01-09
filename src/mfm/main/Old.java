@@ -13,11 +13,14 @@ import mfm.tools.*;
 
 public class Old {
 	public static void main(String min, String keep) throws IOException {
-		if (keep == null) {
+		if (keep.length() == 0) {
 			Tools.available(min+"\\versions",false,true);
 			System.out.println("Type the version you want to keep!");
 			keep = Tools.scan();
 		}
+		
+		//if keep != 0...
+		
 		long startTime = System.nanoTime();
 		Runtime.getRuntime().exec("explorer.exe /select,"+min+"\\versions\\"+keep);
 		if (keep.lastIndexOf(".") >= 3) {

@@ -7,13 +7,16 @@ import mfm.main.*;
 import mfm.tools.*;
 
 public class MFM {	
-	static void main(String min, String sserv, String arg2, String arg3) throws IOException, InterruptedException {
+	public static void main(String min, String sserv, String arg2, String arg3) throws IOException, InterruptedException {
 		
 		//to do list:
+			//add * for all
+
 			//change menu print for new command and help
+			//repair name of backup and all ser is OK
 		
 			//add version command
-			//type 0 to quit everywhere...
+			//type 0 to quit on old
 			//delete individual backup and version(1,2)
 		
 			//in tools:

@@ -64,6 +64,7 @@ public class Tools {
 					});
 		}
 	}
+	
 	public static void deleteFile(String loc) throws IOException {
 		new File(loc).delete();
 	}
