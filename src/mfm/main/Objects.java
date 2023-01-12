@@ -17,7 +17,7 @@ public class Objects {
 	public static void main(String min, String ver) throws IOException {
 		String fileOut = "";
 		String[] pathnamesP;
-		if (ver == null || ver.length() == 0) {
+		if (Tools.nothing(ver)) {
 			pathnamesP = Tools.available(min+"\\assets\\indexes",true,true);
 			ver = Tools.scan();
 		} else {
@@ -144,7 +144,6 @@ public class Objects {
 				lec.close();
 				System.out.println(verjson);
 				Print.time(startTime);
-				System.gc();
 			}
 		}
 	}

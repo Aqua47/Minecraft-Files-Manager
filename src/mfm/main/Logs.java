@@ -52,9 +52,8 @@ public class Logs {
 			logNb++;
 			repeatLog--;
 		}
-		Print.timePlay(timeLog);
+		timePlay(timeLog);
 		Print.time(startTime);
-		System.gc();
 	}
 	
 	private static String findTime (String line) {
@@ -72,5 +71,13 @@ public class Logs {
 		int seconds = Integer.valueOf(time.substring(6,8));
 		seconds = seconds+(minutes*60)+(hours*3600);
 		return seconds;
+	}
+	
+	private static void timePlay(int timeLog) {
+		System.out.println("all seconds: "+timeLog);
+		int minutes = timeLog/60;
+		int hours = minutes/60;
+		int days = hours/24;
+		System.out.println("days:"+days+" hours:"+(hours-(days*60))+" minutes:"+(minutes-(hours*60))+" seconds:"+(timeLog-(minutes*60)));
 	}
 }

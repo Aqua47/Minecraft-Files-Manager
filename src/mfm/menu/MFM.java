@@ -6,34 +6,35 @@ import java.io.IOException;
 import mfm.main.*;
 import mfm.tools.*;
 
-public class MFM {	
+public class MFM {
 	public static void main(String min, String sserv, String arg2, String arg3) throws IOException, InterruptedException {
 		
-		//to do list:
+		/*to do list:
 		
-			//7-zip installer when needed
+			remove indexes file with old command
 		
-			//add version command
-			//type 0 to quit on old
-			//delete individual backup and version(1,2)
+			patch calc of time played in logs
 		
-			//in tools:
-				//add printwriter
-				//add buffreader
+			multiple serv
 		
-			//check old print code
-
-			//remove indexes file with old command
+		
+			in tools:
+				add printwriter
+				add buffreader
+		
 				
-			//add color
+			add color
 		
+			remake objects old indexes...
+		
+		*/
 		boolean serv = false;
 		boolean wrong = false;
 		if (sserv.equals("MFMS")) {
 			serv = true;
 		}
 		boolean br = false;
-		if (arg2 == null || arg2.length() == 0) {
+		if (Tools.nothing(arg2)) {
 			Print.mmenu(serv);
 			Print.menu(serv);
 		}
@@ -61,18 +62,25 @@ public class MFM {
 				wrong = true;
 			}
 			if (arg2.matches("4|logs")) {
-				new File("temp").mkdirs();
-				Logs.main(min, serv);
+				if (install7z()) {
+					new File("temp").mkdirs();
+					Logs.main(min, serv);
+				}
 			}
 			else if (arg2.matches("5|del|delete")) {
 				Delete.main(arg3, serv);
 			}
 			else if (arg2.matches("6|backup")) {
-				new File("temp").mkdirs();
-				Backup.main(min, serv, arg3);
+				if (install7z()) {
+					new File("temp").mkdirs();
+					Backup.main(min, serv, arg3);
+				}
 			}
-			else if (arg2.matches("7|minecraft|.minecraft")) {
+			else if (!serv && (arg2.matches("7|minecraft|.minecraft"))) {
 				Runtime.getRuntime().exec("explorer.exe /select,"+min+"\\assets");
+			}
+			else if (serv && (arg2.matches("7|serv|server"))) {
+				Runtime.getRuntime().exec("explorer.exe /select,"+min);
 			}
 			
 			else if (arg2.matches("0|exit|stop")) {
@@ -81,6 +89,9 @@ public class MFM {
 			else if (arg2.startsWith("help") || arg2.startsWith("welp")) {
 				System.out.println("help is on the way!");
 				Print.help();
+			}
+			else if (arg2.matches("ver|version")) {
+				System.out.println("1.2");
 			}
 			else if (wrong) {
 				System.out.println("not a valid command! Type (mfm help) for help!");
@@ -93,5 +104,19 @@ public class MFM {
 			//clean memory
 			System.gc();
 		}
+	}
+	
+	private static boolean install7z() throws IOException, InterruptedException {
+		File f = new File("C:\\Program Files\\7-Zip\\7z.exe");
+		boolean r = f.exists();
+		if (!r) {
+			System.out.println("you need 7z to use this function would you like to download it? Y for yes");
+			if (Tools.scan().toLowerCase().equals("y")) { //download 7z...
+				Process gz = Runtime.getRuntime().exec("cmd /C start /wait winget install 7zip.7zip");
+				gz.waitFor();
+				r = true;
+			}
+		}
+		return r;
 	}
 }

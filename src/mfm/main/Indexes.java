@@ -12,7 +12,7 @@ public class Indexes {
 	public static void main(String min, String ver) throws IOException {
 		new File("MFM\\indexes\\").mkdirs();
 		String[] pathnamesP1 = {};
-		if (ver == null || ver.length() == 0) {
+		if (Tools.nothing(ver)) {
 			pathnamesP1 = Tools.available(min+"\\assets\\indexes",true,true);
 			ver = Tools.scan();
 		}
@@ -70,6 +70,5 @@ public class Indexes {
 				Print.time(startTime);
 			}
 		}
-		System.gc();
 	}
 }
